@@ -9,7 +9,7 @@ export default function Login() {
   const [errorcheck, seterrorcheck] = useState(false);
   const [success, setsuccess] = useState(false);
   const [isclicked, setisclicked] = useState(false);
-  const {token,settoken} = useContext(TokenAuthContext)
+  const { token, settoken } = useContext(TokenAuthContext);
   const navigate = useNavigate();
   const user = {
     email: "",
@@ -26,15 +26,11 @@ export default function Login() {
       setsuccess(true);
       setisclicked(false);
 
-    
-      settoken(response.data.token)
-      localStorage.setItem("token",response.data.token)
-    
-      
-      
-      
+      settoken(response.data.token);
+      localStorage.setItem("token", response.data.token);
+
       setTimeout(() => {
-         navigate("/");
+        navigate("/");
       }, 2000);
     } catch (error) {
       setisclicked(false);
@@ -47,26 +43,20 @@ export default function Login() {
 
   const formik = useFormik({
     initialValues: user,
-    onSubmit: registerdone
+    onSubmit: registerdone,
   });
 
   return (
-    <div className="flex justify-center items-center min-h-screen " style={{backgroundColor:'#F5F3EE'}}>
-      <form className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg" onSubmit={formik.handleSubmit}>
+    <div className="flex justify-center items-center min-h-screen px-4 md:px-0" style={{ backgroundColor: '#FAF9FE' }}>
+      <form className="max-w-md w-full bg-white p-6 md:p-8 rounded-lg shadow-lg" onSubmit={formik.handleSubmit}>
         <h2 className="text-2xl font-serif pb-4 text-center">Login Now :</h2>
 
         {errorcheck ? (
-          <div
-            className="p-4 mb-4 text-sm text-white rounded-lg bg-red-600"
-            role="alert"
-          >
+          <div className="p-4 mb-4 text-sm text-white rounded-lg bg-red-600" role="alert">
             {errorcheck}
           </div>
         ) : success ? (
-          <div
-            className="p-4 mb-4 text-sm text-white rounded-lg bg-green-600"
-            role="alert"
-          >
+          <div className="p-4 mb-4 text-sm text-white rounded-lg bg-green-600" role="alert">
             Success! Congratulations!
           </div>
         ) : undefined}
@@ -87,7 +77,7 @@ export default function Login() {
             htmlFor="email"
             className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 peer-focus:scale-75 peer-focus:-translate-y-6"
           >
-        email address :
+            email address :
           </label>
         </div>
 
@@ -111,10 +101,7 @@ export default function Login() {
           </label>
 
           {formik.errors.password && formik.touched.password ? (
-            <div
-              className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50"
-              role="alert"
-            >
+            <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
               {formik.errors.password}
             </div>
           ) : undefined}

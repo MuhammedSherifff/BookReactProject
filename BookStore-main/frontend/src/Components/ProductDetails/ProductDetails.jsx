@@ -1,4 +1,4 @@
-import  { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Slider from "react-slick";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -8,7 +8,7 @@ export default function ProductDetails() {
   const { id } = useParams();
   const { token } = useContext(TokenAuthContext);
   const [productData, setProductData] = useState(null);
-  const [similarBooks, setSimilarBooks] = useState([]); // State for similar books
+  const [similarBooks, setSimilarBooks] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -25,7 +25,7 @@ export default function ProductDetails() {
   async function getProductById(id) {
     try {
       const res = await axios.get(
-        `http://localhost:3001/books/getAllBooks/${id}`,
+        `https://book-store-back-end-d-mohamedmostafa427s-projects.vercel.app/books/getAllBooks/${id}`,
         {
           headers: {
             Authorization: token,
@@ -35,41 +35,29 @@ export default function ProductDetails() {
       const fetchedBook = res.data.data;
       setProductData(fetchedBook);
   
-      // Call getSimilarBooks with the fetched book object
       if (fetchedBook) {
-        getSimilarBooks(fetchedBook);
+        getSimilarBooks(fetchedBook.genres[0]);
       }
     } catch (error) {
       console.log(error);
     }
   }
-  
-  async function getSimilarBooks(fetchedBook) {
+
+  async function getSimilarBooks(genre) {
     try {
-      // Extract the id and the first genre from the fetched book object
-      const { _id, genres } = fetchedBook;
-      const firstGenre = "Fantasy" // Assuming genres is an array
-      console.log(genres)
-      console.log(firstGenre)
-      // Construct the request URL with query parameters
       const res = await axios.get(
-        `http://localhost:3001/books/similar?id=${_id}&genre=${firstGenre}`,
+        `http://localhost:3001/books/similar/${genre}`,
         {
           headers: {
             Authorization: token,
           },
         }
       );
-  
-      // Set the fetched similar books
       setSimilarBooks(res.data.data);
     } catch (error) {
       console.log(error);
     }
   }
-  
-  
-  
 
   const handleIncrement = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
@@ -129,18 +117,18 @@ export default function ProductDetails() {
   };
 
   return (
-    <div className="container m-auto my-12">
-      <div className="grid grid-cols-2 gap-12">
-        <div className="flex flex-row-reverse gap-5 items-start overflow-hidden">
-          <div className="w-full">
-            <img className="w-full" src={product?.imageCover} alt={product?.title} />
+    <div className="container mx-auto my-12 px-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="flex flex-col md:flex-row md:gap-5 items-start overflow-hidden">
+          <div className="w-full md:w-2/3">
+            <img className="w-full h-auto" src={product?.imageCover} alt={product?.title} />
           </div>
-          <div className="flex gap-3 flex-col w-1/3">
+          <div className="flex gap-3 flex-col md:w-1/3">
             <div className="slider-container">
               <Slider {...settings}>
                 {product.images.map((image, index) => (
                   <div key={index} className="mt-4">
-                    <img className="w-full" src={image} alt={product?.title} />
+                    <img className="w-full h-auto" src={image} alt={product?.title} />
                   </div>
                 ))}
               </Slider>
@@ -148,10 +136,10 @@ export default function ProductDetails() {
           </div>
         </div>
 
-        <div>
-          <div className="product_desc">
-            <h2 className="font-bold text-4xl mb-4">{product?.title}</h2>
-            <p>{product.description}</p>
+        <div className="flex flex-col">
+          <div className="product_desc mb-6">
+            <h2 className="font-bold text-4xl">{product?.title}</h2>
+            <p className="mt-4">{product?.description}</p>
           </div>
 
           <div className="product_rating border-b-2 pb-6">
@@ -183,7 +171,7 @@ export default function ProductDetails() {
             <p>Suggested payment with 6 months special financing</p>
           </div>
 
-          <div className="buttons">
+          <div className="buttons mb-6">
             <div className="flex justify-start items-center mb-3">
               <div className="number_btn flex gap-7 m-3 rounded-3xl bg-gray-200 text-gray-950 px-3 py-1 justify-center items-center">
                 <i
@@ -196,15 +184,13 @@ export default function ProductDetails() {
                   onClick={handleIncrement}
                 ></i>
               </div>
-
             </div>
             <div>
               <div className="flex items-center gap-4">
-                <button className="text-white rounded-3xl bg-emerald-800 px-16 py-3 hover:bg-emerald-900">
+                <button className="text-white rounded-3xl bg-emerald-800 px-8 py-3 hover:bg-emerald-900">
                   Buy now
                 </button>
-
-                <button className="text-emerald-700 rounded-3xl bg-white border-emerald-700 border px-16 py-3 hover:text-emerald-900">
+                <button className="text-emerald-700 rounded-3xl bg-white border-emerald-700 border px-8 py-3 hover:text-emerald-900">
                   Add to cart
                 </button>
               </div>
@@ -216,7 +202,6 @@ export default function ProductDetails() {
               <i className="fa-solid fa-truck-fast text-orange-400"></i>
               <p>FREE Delivery</p>
             </div>
-
             <p className="underline ps-10">
               Enter your postal code for Delivery availability
             </p>
@@ -227,12 +212,25 @@ export default function ProductDetails() {
       {/* Similar Books Section */}
       <div className="mt-10">
         <h3 className="text-2xl font-bold mb-4">Similar Books</h3>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {similarBooks.map((book) => (
-            <div key={book._id} className="p-4 border rounded-lg">
-              <img src={book.coverImg} alt={book.title} className="w-full h-48 object-cover mb-3" />
-              <h4 className="font-bold">{book.title}</h4>
-              <p className="text-sm">Rating: {book.average_rating}</p>
+            <div
+              key={book._id}
+              className="overflow-hidden group my-6 bg-transparent shadow-2xl rounded-xl hover:scale-110 transition-transform duration-300"
+            >
+              <div className="relative overflow-hidden">
+                <img
+                  className="w-full h-60 object-cover"
+                  src={book.coverImg}
+                  alt={book.title}
+                />
+                <div
+                  onClick={() => {/* Handle navigation to the book's details */}}
+                  className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-30 opacity-0 hover:opacity-100 transition-opacity duration-300"
+                >
+                  <h4 className="text-white text-lg font-bold">{book.title}</h4>
+                </div>
+              </div>
             </div>
           ))}
         </div>

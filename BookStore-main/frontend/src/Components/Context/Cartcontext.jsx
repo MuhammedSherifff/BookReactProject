@@ -1,12 +1,12 @@
 import axios from "axios";
 import React, { createContext,  useState } from "react";
 import toast from "react-hot-toast";
-
 export const cartcontext = createContext();
+
 
 export default function Cartcontext({ children }) {
   const [message, setMessage] = useState(null);
-
+  const [money, setmoney] = useState(0)
   async function Addtocart(bookId, token) {
     return await axios
       .post(
@@ -50,7 +50,7 @@ export default function Cartcontext({ children }) {
   }
 
   return (
-    <cartcontext.Provider value={{ Addtocart, getallcart }}>
+    <cartcontext.Provider value={{ Addtocart, getallcart,money,setmoney }}>
       {children}
     </cartcontext.Provider>
   );

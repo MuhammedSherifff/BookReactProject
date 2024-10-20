@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Footer() {
   return (
-    <footer className="text-gray-600 py-12 shadow-inner" style={{backgroundColor : "#F4F2EE"}} >
+    <footer className="text-gray-600 py-12 shadow-inner" style={{backgroundColor : "#F6F3FD"}} >
       <div className="w-5/6 mx-auto flex flex-col md:flex-row justify-between items-start">
         
         <div className="mb-8 md:mb-0 max-w-sm">
@@ -19,11 +19,11 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col space-y-6 md:flex-row md:space-y-0 md:space-x-8">
-          <div className=" p-6 rounded-lg text-center shadow-lg" style={{backgroundColor : "#F4F2EE"}}>
+          <div className=" p-6 rounded-lg text-center shadow-lg" style={{backgroundColor : "#F6F3FD"}}>
             <i className="fas fa-basketball-ball text-gray-500 text-2xl mb-4"></i>
             <p>shefo.com</p>
           </div>
-          <div className="bg-gray-800 p-6 rounded-lg text-center shadow-lg" style={{backgroundColor : "#F4F2EE"}}>
+          <div className="bg-gray-800 p-6 rounded-lg text-center shadow-lg" style={{backgroundColor : "#F6F3FD"}}>
             <i className="fas fa-envelope text-gray-500 text-2xl mb-4"></i>
             <p>shefo@gmail.com</p>
           </div>

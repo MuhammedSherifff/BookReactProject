@@ -35,7 +35,7 @@ export default function Home() {
 
   return (
     <>
-      <div style={{ backgroundColor: "#F4F2EE" }} className="py-24 w-full overflow-hidden ">
+      <div style={{ backgroundColor: "#FAF9FE" }} className="py-24 w-full overflow-hidden ">
         <Slider {...settings} arrows >
           <div>
             <div className="w-5/6 mx-auto flex justify-center items-center  ">

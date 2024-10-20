@@ -71,7 +71,7 @@ export default function Register() {
   });
 
   return (
-    <div className="flex justify-center items-center min-h-screen" style={{ backgroundColor: '#F5F3EE' }}>
+    <div className="flex justify-center items-center min-h-screen" style={{ backgroundColor: '#FAF9FE' }}>
       <form className="w-full max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg" onSubmit={formik.handleSubmit}>
         <h2 className="font-serif pb-4">Register Now :</h2>
 
