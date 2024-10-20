@@ -49,7 +49,7 @@ export default function Login() {
     initialValues: user,
     onSubmit: registerdone
   });
-//   /^(?=.*[A-Z]).{8,}$/
+
   return (
     <div className="flex justify-center items-center min-h-screen " style={{backgroundColor:'#F5F3EE'}}>
       <form className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg" onSubmit={formik.handleSubmit}>

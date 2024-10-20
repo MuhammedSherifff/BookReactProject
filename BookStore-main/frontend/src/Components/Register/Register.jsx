@@ -23,7 +23,7 @@ export default function Register() {
     try {
       setisclicked(true);
 
-      // Call the backend's /register endpoint
+      
       const response = await axios.post(
         'https://book-store-back-end-d-mohamedmostafa427s-projects.vercel.app/users/register',
         {
@@ -62,7 +62,7 @@ export default function Register() {
       password: yup
         .string()
         .required()
-        .matches(/^(?=.*[A-Z]).{8,}$/, 'Password must be at least 8 characters and contain an uppercase letter'),
+        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])[A-Za-z\d!@#$%^&*()]{8,}$/, 'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character."'),
       rePassword: yup
         .string()
         .required('Confirm Password is Required')
