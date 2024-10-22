@@ -4,6 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { TokenAuthContext } from "../Context/Tokencontext";
 import { cartcontext } from "../Context/Cartcontext";
+import Loading from "../Loading/Loading";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -86,6 +87,8 @@ export default function ProductDetails() {
         
       }
     } catch (error) {
+      console.log(id);
+      
       console.log(error);
       
     }
@@ -93,6 +96,7 @@ export default function ProductDetails() {
 
   const img1 = productData?.coverImg;
   const product = {
+    pid:productData?._id,
     title: productData?.title,
     description: productData?.description,
     ratingsAverage: productData?.rating,
@@ -139,7 +143,8 @@ export default function ProductDetails() {
   };
 
   return (
-    <div className="container mx-auto my-12 px-4">
+    <div>
+    {product.pid ?     <div className="container mx-auto my-12 px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <div className="flex flex-col md:flex-row md:gap-5 items-start overflow-hidden">
           <div className="w-full md:w-2/3">
@@ -187,7 +192,7 @@ export default function ProductDetails() {
             <h2 className="font-bold text-2xl">
               <span className="text-orange-500 me-3">{totalPrice} £</span>
               or
-              <span className="text-orange-500 mx-3">{(totalPrice / 6)} £</span>
+              <span className="text-orange-500 mx-3">{(totalPrice / 6).toFixed(2)} £</span>
               / month
             </h2>
             <p>Suggested payment with 6 months special financing</p>
@@ -198,7 +203,7 @@ export default function ProductDetails() {
             <div>
               <div className="flex items-center gap-4">
                 <button onClick={()=>{
-                 carthandler(id)
+                 carthandler(product.pid)
                 }} className="text-emerald-700 rounded-3xl bg-white border-emerald-700 border px-8 py-3 hover:text-emerald-900">
                   Add to cart
                 </button>
@@ -244,6 +249,8 @@ export default function ProductDetails() {
           ))}
         </div>
       </div>
+    </div>  : <Loading/>}
+
     </div>
   );
 }

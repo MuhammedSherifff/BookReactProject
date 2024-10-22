@@ -53,6 +53,7 @@ export default function Cart() {
       });
 
       
+      
       setCart((prevCart) => prevCart.filter((book) => book._id !== bookId));
     } catch (error) {
       console.error("Error removing book from cart:", error.message);
