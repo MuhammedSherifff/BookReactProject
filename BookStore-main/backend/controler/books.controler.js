@@ -30,41 +30,40 @@ const getBookById = async (req, res) => {
 
 
 
- const addToPurchasedList = async (req, res) => {
+const addToPurchasedList = async (req, res) => {
     try {
         const userId = req.user.id;
-        console.log(userId);
-        const { Book_Id } = req.body;
+        const { Book_Id } = req.body; 
 
-        const user = await User.findById(userId);
+        const user = await User.findById(userId); 
         if (!user) {
             return res.status(404).json({ status: "Error", message: "User not found" });
         }
 
-        if (user.purchasedBooks.includes(Book_Id)) {
-            return res.status(400).json({ status: "Error", message: "Book already in wishlist" });
+        const bookExists = user.purchasedBooks.some(book => book._id.toString() === Book_Id.toString());
+        
+        if (bookExists) {
+            return res.status(400).json({ status: "Error", message: "Book already in purchased list" });
         }
 
-        // Find the book using the correct Book_Id
-        const book = await booksModel.findOne({ _id: Book_Id });
+        const book = await booksModel.findById(Book_Id);
         if (!book) {
             return res.status(404).json({ status: "Error", message: "Book not found" });
         }
 
-        // Add the book to the user's purchasedBooks array
         user.purchasedBooks.push(book);
-        await user.save();
-
+        await user.save(); 
         return res.status(200).json({
             status: "Success",
-            message: "Book added to purchased Books successfully",
+            message: "Book added to purchased list successfully",
             purchasedBooks: user.purchasedBooks
         });
     } catch (error) {
-        console.error("Error adding to wishlist:", error.message);
+        console.error("Error adding to purchased list:", error.message);
         return res.status(500).json({ status: "Error", message: "Server error" });
     }
 };
+
 
     
 
@@ -89,15 +88,13 @@ const getSimilarBooks = async (req, res) => {
         const { category } = req.params; 
         console.log("Category:", category);
 
-        // Find books by category, sort by rating, and limit to 5
         const books = await booksModel
             .find({ genres: { $regex: category, $options: 'i' } })
-            .sort({ ratingsAverage: -1 }) // Assuming the rating field is named ratingsAverage
-            .limit(5); // Limit the result to the top 5 books
+            .sort({ ratingsAverage: -1 }) 
+            .limit(5);
 
         console.log("Books found:", books.length);
 
-        // If no books are found, you can handle it as you see fit
         if (books.length === 0) {
             return res.status(404).json({
                 status: "Error",
@@ -135,25 +132,19 @@ const getSimilarBooks = async (req, res) => {
             return res.status(404).json({ status: "Error", message: "User not found" });
         }
 
-        // Check if the book exists
         if (!book) {
             return res.status(404).json({ status: "Error", message: "Book not found" });
         }
 
-        // Find the index of the book object in the purchasedBooks array
         const bookIndex = user.purchasedBooks.findIndex((purchasedBook) => purchasedBook._id.toString() ==bookId);
-        // Check if the bookId is present in the purchasedBooks array
         if (bookIndex === -1) {
             return res.status(404).json({ status: "Error", message: "Book not found in purchased list" });
         }
 
-        // Remove the book object from the purchasedBooks array using splice
         user.purchasedBooks.splice(bookIndex, 1);
 
-        // Save the updated user document
         await user.save();
 
-        // Return the updated purchasedBooks list
         return res.status(200).json({
             status: "Success",
             message: "Book removed from purchased list successfully",
@@ -189,26 +180,34 @@ const getbookcat = async (req, res) => {
     }
 };
 
+
+  
 const clearPurchasedList = async (req, res) => {
     try {
         const userId = req.user.id; 
-        const user = await User.findById(userId);
+
+        const user = await User.findById(userId); 
 
         if (!user) {
             return res.status(404).json({ status: "Error", message: "User not found" });
         }
 
-        user.purchasedList = [];
+        user.purchasedBooks = [];
+        console.log("Before saving, purchasedBooks:", user.purchasedBooks);
 
         await user.save();
 
-        return res.status(200).json({ status: "Success", message: "Purchased list cleared successfully", purchasedList: user.purchasedList });
+        return res.status(200).json({ 
+            status: "Success", 
+            message: "Purchased list cleared successfully", 
+            purchasedBooks: user.purchasedBooks 
+        });
     } catch (error) {
         console.error("Error clearing purchased list:", error.message);
         return res.status(500).json({ status: "Error", message: "Server error" });
     }
 };
-  
+
 
 
 

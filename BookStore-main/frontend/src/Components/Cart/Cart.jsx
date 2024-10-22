@@ -46,14 +46,14 @@ export default function Cart() {
 
   async function removeallcart() {
     try {
-      await axios.patch(`http://localhost:3001/books/PurchasedList}`, {}, {
+      await axios.delete(`http://localhost:3001/books/PurchasedList`, {
         headers: {
           Authorization: token,
         },
       });
 
       
-      setCart((prevCart) => prevCart.filter((book) => book._id !== bookId));
+      setCart([]);
     } catch (error) {
       console.error("Error removing book from cart:", error.message);
     }

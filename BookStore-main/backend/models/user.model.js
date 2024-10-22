@@ -20,7 +20,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 8,
     }, 
-    purchasedBooks: [] 
+    purchasedBooks: {
+        type: Array,
+        default: []
+    }
 });
 
 module.exports = mongoose.model("User", userSchema);

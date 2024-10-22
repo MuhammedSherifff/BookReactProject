@@ -25,7 +25,7 @@ router.route("/getAllBooks/:bookId")
 router.route( "/PurchasedList" )
                 .patch( authenticate , addToPurchasedList )
                 .get( authenticate , getPurchasedList )
-                .delete( authenticate , clearPurchasedList);
+                .delete( authenticate , clearPurchasedList )
 
 router.route( "/GetBooksByCat/" )
                 .post( authenticate , addToPurchasedList )
