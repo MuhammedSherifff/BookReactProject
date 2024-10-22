@@ -8,9 +8,11 @@ import { TokenAuthContext } from "../Context/Tokencontext";
 import toast from "react-hot-toast";
 import { cartcontext } from './../Context/Cartcontext';
 
+
 export default function Shop() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [data, setData] = useState(null);
+  const [flag, setflag] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { token, id, setId } = useContext(TokenAuthContext);
   const { setmoney, money } = useContext(cartcontext);
@@ -26,8 +28,10 @@ export default function Shop() {
   };
 
   const handleCategoryChange = (category) => {
+    setflag(true)
     setSelectedCategory(category);
     setIsDropdownOpen(false);
+
   };
 
   async function carthandler(bookId) {
@@ -40,9 +44,13 @@ export default function Shop() {
             Authorization: token,
           },
         }
+        
       );
+    
+     
 
       if (res.data.status === "Success") {
+        
         toast.success("Book added to cart successfully");
         const ps = res?.data.purchasedBooks;
         ps.forEach((pr) => {
@@ -81,9 +89,12 @@ export default function Shop() {
     )
     .then((res) => {
       setData(res.data.data);
+      setflag(false)
     })
     .catch((err) => {
       console.log(err);
+      setflag(false)
+
     });
   }
 
@@ -101,7 +112,8 @@ export default function Shop() {
   }, [selectedCategory]);
 
   return (
-    <div className="mt-12 flex flex-col lg:flex-row gap-5">
+    <div>
+      {flag==false ? <div className="mt-12 flex flex-col lg:flex-row gap-5">
       <div className="w-full lg:w-1/4 bg-600 sticky top-20 mb-6">
         <div className="w-full flex flex-col">
           <div className="border-b-2 mb-3">
@@ -181,6 +193,9 @@ export default function Shop() {
           ))
         )}
       </div>
+    </div> : <Loading/> }
+      
     </div>
+
   );
 }
