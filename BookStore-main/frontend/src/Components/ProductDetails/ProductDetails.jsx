@@ -3,14 +3,18 @@ import Slider from "react-slick";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { TokenAuthContext } from "../Context/Tokencontext";
+import { cartcontext } from "../Context/Cartcontext";
 
 export default function ProductDetails() {
   const { id } = useParams();
   const { token } = useContext(TokenAuthContext);
+  const { setmoney, money } = useContext(cartcontext);
   const [productData, setProductData] = useState(null);
   const [similarBooks, setSimilarBooks] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
+
+
 
   useEffect(() => {
     getProductById(id);
@@ -59,15 +63,33 @@ export default function ProductDetails() {
     }
   }
 
-  const handleIncrement = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
-  };
+  async function carthandler(bookId) {
+    try {
+      const res = await axios.patch(
+        "http://localhost:3001/books/PurchasedList",
+        { Book_Id: bookId },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
 
-  const handleDecrement = () => {
-    if (quantity > 1) {
-      setQuantity((prevQuantity) => prevQuantity - 1);
+      if (res.data.status === "Success") {
+        const ps = res?.data.purchasedBooks;
+        ps.forEach((pr) => {
+          setmoney(pr?.price + money);
+        });
+      } else {
+        
+        console.log(res.data.message || "Error adding to cart");
+        
+      }
+    } catch (error) {
+      console.log(error);
+      
     }
-  };
+  }
 
   const img1 = productData?.coverImg;
   const product = {
@@ -165,32 +187,19 @@ export default function ProductDetails() {
             <h2 className="font-bold text-2xl">
               <span className="text-orange-500 me-3">{totalPrice} £</span>
               or
-              <span className="text-orange-500 mx-3">{Math.floor(totalPrice / 6)} £</span>
+              <span className="text-orange-500 mx-3">{(totalPrice / 6)} £</span>
               / month
             </h2>
             <p>Suggested payment with 6 months special financing</p>
           </div>
 
           <div className="buttons mb-6">
-            <div className="flex justify-start items-center mb-3">
-              <div className="number_btn flex gap-7 m-3 rounded-3xl bg-gray-200 text-gray-950 px-3 py-1 justify-center items-center">
-                <i
-                  className="cursor-pointer text-xl fa-solid fa-minus"
-                  onClick={handleDecrement}
-                ></i>
-                <p className="text-2xl">{quantity}</p>
-                <i
-                  className="fa-solid fa-plus cursor-pointer text-xl"
-                  onClick={handleIncrement}
-                ></i>
-              </div>
-            </div>
+          
             <div>
               <div className="flex items-center gap-4">
-                <button className="text-white rounded-3xl bg-emerald-800 px-8 py-3 hover:bg-emerald-900">
-                  Buy now
-                </button>
-                <button className="text-emerald-700 rounded-3xl bg-white border-emerald-700 border px-8 py-3 hover:text-emerald-900">
+                <button onClick={()=>{
+                 carthandler(id)
+                }} className="text-emerald-700 rounded-3xl bg-white border-emerald-700 border px-8 py-3 hover:text-emerald-900">
                   Add to cart
                 </button>
               </div>

@@ -16,6 +16,7 @@ import ProductDetails from "./Components/ProductDetails/ProductDetails";
 import About from "./Components/About/About";
 import Contact from "./Components/Contact/Contact";
 import Cartcontext from "./Components/Context/Cartcontext";
+import Congratulations from "./Components/Congratulations/Congratulations";
 
 function App() {
   const router = createBrowserRouter([
@@ -57,6 +58,9 @@ function App() {
         
         {path:"About",element:<About/>},
         {path:"Contact",element:<Contact/>},
+        {path:"Congratulations",element:<ProtectedRoutes>
+          <Congratulations/>
+         </ProtectedRoutes>},
       { path: "*", element: <Error /> },
       ],
     },

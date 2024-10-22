@@ -5,7 +5,8 @@ const { getAllBooks,
      getPurchasedList, 
 getSimilarBooks,
 removeFromPurchasedList,
-getbookcat
+getbookcat,
+clearPurchasedList
 }
       = require("../controler/books.controler");
 
@@ -24,6 +25,7 @@ router.route("/getAllBooks/:bookId")
 router.route( "/PurchasedList" )
                 .patch( authenticate , addToPurchasedList )
                 .get( authenticate , getPurchasedList )
+                .delete( authenticate , clearPurchasedList);
 
 router.route( "/GetBooksByCat/" )
                 .post( authenticate , addToPurchasedList )
@@ -32,4 +34,5 @@ router.route( "/GetBooksByCat/" )
 router.get('/similar/:category', getSimilarBooks);
 router.patch('/PurchasedList/remove/:bookId', authenticate, removeFromPurchasedList);
 router.get( "/GetBooksByCat/:category",authenticate,getbookcat )
+
 module.exports = router

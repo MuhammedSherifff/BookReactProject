@@ -3,12 +3,14 @@ import img from "../../assets/logo.png";
 import { TokenAuthContext } from "../Context/Tokencontext";
 import axios from "axios";
 import { cartcontext } from "../Context/Cartcontext";
+import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
   const { token } = useContext(TokenAuthContext);
   const { money } = useContext(cartcontext);
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0); // State to track total price
+  const navigator =useNavigate()
   
   async function getCart(token) {
     try {
@@ -40,6 +42,25 @@ export default function Cart() {
       console.error("Error removing book from cart:", error.message);
     }
   }
+
+
+  async function removeallcart() {
+    try {
+      await axios.patch(`http://localhost:3001/books/PurchasedList}`, {}, {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      
+      setCart((prevCart) => prevCart.filter((book) => book._id !== bookId));
+    } catch (error) {
+      console.error("Error removing book from cart:", error.message);
+    }
+  }
+
+
+
 
   useEffect(() => {
     getCart(token);
@@ -185,7 +206,7 @@ export default function Cart() {
             className="w-full bg-gray-800 rounded-lg p-3 mt-4 text-white hover:bg-gray-900 "
             type="button"
             onClick={() => {
-              console.log("HBEBE");
+              navigator("/congratulations")
             }}
           >
             Check Out
@@ -195,7 +216,7 @@ export default function Cart() {
             className="w-full bg-gray-800 rounded-lg p-3 mt-4 text-white hover:bg-gray-900 "
             type="button"
             onClick={() => {
-              console.log("hbebe");
+              removeallcart()
             }}
           >
             Clear All Cart{" "}

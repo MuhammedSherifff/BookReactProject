@@ -117,20 +117,20 @@ const getSimilarBooks = async (req, res) => {
   };
   const removeFromPurchasedList = async (req, res) => {
     try {
-        const userId = req.user.id; // Get the user ID from the authenticated user
-        const { bookId } = req.params; // Get the book ID from the request parameters
+        const userId = req.user.id; 
+        const { bookId } = req.params; 
         console.log(req.params);
 
-        // Ensure the bookId is valid
+        
         if (!bookId) {
             return res.status(400).json({ status: "Error", message: "Book ID is required" });
         }
 
-        // Find the user by their ID
+       
         const user = await User.findById(userId);
-        const book = await Book.findById(bookId); // Use findById instead of findOne
+        const book = await Book.findById(bookId); 
 
-        // Check if the user exists
+       
         if (!user) {
             return res.status(404).json({ status: "Error", message: "User not found" });
         }
@@ -189,6 +189,25 @@ const getbookcat = async (req, res) => {
     }
 };
 
+const clearPurchasedList = async (req, res) => {
+    try {
+        const userId = req.user.id; 
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ status: "Error", message: "User not found" });
+        }
+
+        user.purchasedList = [];
+
+        await user.save();
+
+        return res.status(200).json({ status: "Success", message: "Purchased list cleared successfully", purchasedList: user.purchasedList });
+    } catch (error) {
+        console.error("Error clearing purchased list:", error.message);
+        return res.status(500).json({ status: "Error", message: "Server error" });
+    }
+};
   
 
 
@@ -201,5 +220,7 @@ module.exports = {
     getPurchasedList,
     getSimilarBooks,
     removeFromPurchasedList,
-    getbookcat
+    getbookcat,
+    clearPurchasedList
+
 };
