@@ -70,7 +70,6 @@ export default function Login() {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
             required
           />
           <label
@@ -99,12 +98,7 @@ export default function Login() {
           >
             Password
           </label>
-
-          {formik.errors.password && formik.touched.password ? (
-            <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
-              {formik.errors.password}
-            </div>
-          ) : undefined}
+          
         </div>
 
         <button

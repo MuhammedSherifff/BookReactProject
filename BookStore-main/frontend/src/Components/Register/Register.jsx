@@ -23,7 +23,6 @@ export default function Register() {
     try {
       setisclicked(true);
 
-      
       const response = await axios.post(
         'https://book-store-back-end-d-mohamedmostafa427s-projects.vercel.app/users/register',
         {
@@ -75,7 +74,7 @@ export default function Register() {
       <form className="w-full max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg" onSubmit={formik.handleSubmit}>
         <h2 className="font-serif pb-4">Register Now :</h2>
 
-        {/* Error or Success Message */}
+        
         {errorcheck ? (
           <div className="p-4 mb-4 text-sm text-white rounded-lg bg-red-600" role="alert">
             {errorcheck}
@@ -86,9 +85,9 @@ export default function Register() {
           </div>
         ) : undefined}
 
-        {/* Input Fields */}
+       
         <div className="space-y-6">
-          {/* First Name */}
+         
           <div className="relative z-0 w-full group">
             <input
               type="text"
@@ -114,7 +113,7 @@ export default function Register() {
             )}
           </div>
 
-          {/* Last Name */}
+         
           <div className="relative z-0 w-full group">
             <input
               type="text"
@@ -140,7 +139,6 @@ export default function Register() {
             )}
           </div>
 
-          {/* Email */}
           <div className="relative z-0 w-full group">
             <input
               type="email"
@@ -166,7 +164,7 @@ export default function Register() {
             )}
           </div>
 
-          {/* Password */}
+         
           <div className="relative z-0 w-full group">
             <input
               type="password"
@@ -192,7 +190,7 @@ export default function Register() {
             )}
           </div>
 
-          {/* Confirm Password */}
+     
           <div className="relative z-0 w-full group">
             <input
               type="password"
@@ -218,7 +216,7 @@ export default function Register() {
             )}
           </div>
 
-          {/* Submit Button */}
+          
           {isclicked ? (
             <button
               type="submit"

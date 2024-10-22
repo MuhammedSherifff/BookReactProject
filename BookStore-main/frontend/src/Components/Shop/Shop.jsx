@@ -92,9 +92,7 @@ export default function Shop() {
       setflag(false)
     })
     .catch((err) => {
-      console.log(err);
       setflag(false)
-
     });
   }
 
