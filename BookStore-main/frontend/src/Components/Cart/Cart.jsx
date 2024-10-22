@@ -9,7 +9,7 @@ export default function Cart() {
   const { token } = useContext(TokenAuthContext);
   const { money } = useContext(cartcontext);
   const [cart, setCart] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0); // State to track total price
+  const [totalPrice, setTotalPrice] = useState(0); 
   const navigator =useNavigate()
   
   async function getCart(token) {
@@ -72,6 +72,8 @@ export default function Cart() {
       return accumulator + (product?.price || 0); // Ensure price exists
     }, 0);
     setTotalPrice(total);
+
+
   }, [cart]);
 
   return (
@@ -175,7 +177,7 @@ export default function Cart() {
             </div>
             <div>
               <p className="text-gray-400 ">
-                EGP <span className="font-bold">{totalPrice}</span>
+                EGP <span className="font-bold">{totalPrice.toFixed(2)}</span>
               </p>
             </div>
           </div>
@@ -197,7 +199,7 @@ export default function Cart() {
               </p>
             </div>
             <div>
-              <p className="text-emerald-950 font-bold text-lg">EGP {totalPrice}
+              <p className="text-emerald-950 font-bold text-lg">EGP {totalPrice.toFixed(2)}
               </p>
             </div>
           </div>
@@ -206,6 +208,7 @@ export default function Cart() {
             className="w-full bg-gray-800 rounded-lg p-3 mt-4 text-white hover:bg-gray-900 "
             type="button"
             onClick={() => {
+              removeallcart()
               navigator("/congratulations")
             }}
           >
